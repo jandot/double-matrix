@@ -68,6 +68,10 @@ transitionGc = () ->
 		.transition()
 		.duration(5000)
 		.attr('cy', (d,i) -> mapping(gc)[i]*2 )
+	gcgcMarks
+		.transition()
+		.duration(5000)
+		.attr('y', (d,i) -> mapping(gc)[i]*2 )
 	matrixMarks
 		.transition()
 		.duration(5000)
@@ -83,7 +87,7 @@ conservationMarks = svg.selectAll("circle.conservation")
 		cy: (d) -> d*20
 		r: 2
 		class: 'conservation'
-		transform: 'translate(120,80)'
+		transform: 'translate(150,100)'
 	})
 	.style({
 		fill: 'red'
@@ -100,7 +104,7 @@ gcMarks = svg.selectAll("circle.gc")
 		cy: (d,i) -> i*2
 		r: 2
 		class: 'gc'
-		transform: 'translate(80,120)'
+		transform: 'translate(100,150)'
 	})
 	.style({
 		fill: 'green'
@@ -118,7 +122,7 @@ matrixMarks = svg.selectAll("rect.matrix")
 		width: 2
 		height: 2
 		class: 'matrix'
-		transform: 'translate(120,120)'
+		transform: 'translate(150,150)'
 	})
 	.style({
 		fill: 'blue'
@@ -127,6 +131,38 @@ matrixMarks = svg.selectAll("rect.matrix")
 matrixMarks.append("svg:title")
 	.text( (d) -> return d.value )
 
+# Transition matrices
+svg.selectAll("circle.gc2")
+	.data(gc)
+	.enter()
+	.append("circle")
+	.attr({
+		cx: (d,i) -> i*2
+		cy: (d) -> d*20
+		r: 2
+		class: 'gc2'
+		transform: 'translate(0,120)'
+	})
+	.style({
+		fill: 'green'
+	})
+gcgcMarks = svg.selectAll("rect.gcgc")
+	.data(gc)
+	.enter()
+	.append("rect")
+	.attr({
+		x: (d,i) -> i*2
+		y: (d,i) -> i*2
+		width: 2
+		height: 2
+		class: 'gcgc'
+		transform: 'translate(0,150)'
+	})
+	.style({
+		fill: 'grey'
+	})
+
+# Buttons to press
 svg.append('rect')
 	.attr({
 		x: 500,
