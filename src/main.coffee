@@ -25,9 +25,14 @@ svg = d3.select("body").append("svg").attr({width: 1000, height: 1000})
 
 padding = 10
 
-size = 49
+size = 99
 translationMainMatrixX = padding + size*2 + padding + 20 + padding
 translationMainMatrixY = padding + size*2 + padding + 20 + padding
+
+transitionDuration = 1000
+
+conservationSorted = false
+gcSorted = false
 
 # Generate the data
 conservation = []
@@ -56,34 +61,69 @@ mapping = (d) ->
 		m[i] = sortedD.indexOf(x)
 	return m
 
+mappingConservation = mapping(conservation)
+mappingGc = mapping(gc)
+
 transitionConservation = () ->
-	conservationMarks
-		.transition()
-		.duration(5000)
-		.attr('cx', (d,i) -> mapping(conservation)[i]*2 )
-	conservationconservationMarks
-		.transition()
-		.duration(5000)
-		.attr('x', (d,i) -> mapping(conservation)[i]*2 )
-	matrixMarks
-		.transition()
-		.duration(5000)
-		.attr('x', (d) -> mapping(conservation)[d.x]*2 )
+	if conservationSorted
+		conservationMarks
+			.transition()
+			.duration(transitionDuration )
+			.attr('cx', (d,i) -> i*2 )
+		conservationconservationMarks
+			.transition()
+			.duration(transitionDuration )
+			.attr('x', (d,i) -> i*2 )
+		matrixMarks
+			.transition()
+			.duration(transitionDuration )
+			.attr('x', (d) -> d.x*2 )
+		conservationSorted = false
+	else
+		conservationMarks
+			.transition()
+			.duration(transitionDuration )
+			.attr('cx', (d,i) -> mappingConservation[i]*2 )
+		conservationconservationMarks
+			.transition()
+			.duration(transitionDuration )
+			.attr('x', (d,i) -> mappingConservation[i]*2 )
+		matrixMarks
+			.transition()
+			.duration(transitionDuration )
+			.attr('x', (d) -> mappingConservation[d.x]*2 )
+		conservationSorted = true
 	return
 
 transitionGc = () ->
-	gcMarks
-		.transition()
-		.duration(5000)
-		.attr('cy', (d,i) -> mapping(gc)[i]*2 )
-	gcgcMarks
-		.transition()
-		.duration(5000)
-		.attr('y', (d,i) -> mapping(gc)[i]*2 )
-	matrixMarks
-		.transition()
-		.duration(5000)
-		.attr('y', (d) -> mapping(gc)[d.y]*2 )
+	if gcSorted
+		gcMarks
+			.transition()
+			.duration(transitionDuration )
+			.attr('cy', (d,i) -> i*2 )
+		gcgcMarks
+			.transition()
+			.duration(transitionDuration )
+			.attr('y', (d,i) -> i*2 )
+		matrixMarks
+			.transition()
+			.duration(transitionDuration )
+			.attr('y', (d) -> d.y*2 )
+		gcSorted = false
+	else
+		gcMarks
+			.transition()
+			.duration(transitionDuration )
+			.attr('cy', (d,i) -> mappingGc[i]*2 )
+		gcgcMarks
+			.transition()
+			.duration(transitionDuration )
+			.attr('y', (d,i) -> mappingGc[i]*2 )
+		matrixMarks
+			.transition()
+			.duration(transitionDuration )
+			.attr('y', (d) -> mappingGc[d.y]*2 )
+		gcSorted = true
 
 # Draw everything
 conservationMarks = svg.selectAll("circle.conservation")
