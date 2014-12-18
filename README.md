@@ -1,6 +1,6 @@
-# Single cell sequencing - DNA/RNA
+# Re-sortable matrices
 
-Visualization to aid interpretation of single-cell DNA and RNA data
+Visualization of re-sortable matrices
 
 ## Setting things up
 
