@@ -1,3 +1,9 @@
+Array::chunk = (chunkSize) ->
+  array = this
+  [].concat.apply [], array.map((elem, i) ->
+    (if i % chunkSize then [] else [array.slice(i, i + chunkSize)])
+  )
+
 clone = (obj) ->
   if not obj? or typeof obj isnt 'object'
     return obj
